@@ -24,7 +24,7 @@ def check_password():
         # 第一次進入，顯示輸入密碼畫面
         st.title("🔒 系統安全驗證")
         st.text_input(
-            "請輸入密碼以存取周K MACD 篩選器：",
+            "請輸入密碼以存取周K MACD 紅棒增篩選器：",
             type="password",
             on_change=password_entered,
             key="password"
