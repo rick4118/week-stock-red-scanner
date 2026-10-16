@@ -80,16 +80,17 @@ if check_password():
                 if idx_loc < 2: continue
                 recent = df.iloc[idx_loc-2 : idx_loc+1].copy()
                 osc_val = recent['OSC'].values.flatten()
-                pure_green_shrink = (osc_val[-2] < 0) and (osc_val[-1] < 0) and (osc_val[-1] > osc_val[-2])
-                if pure_green_shrink:
+                # 紅柱增條件：當周與前一周皆為紅柱 (>0)，且當周紅柱比前一周長 (osc_val[-1] > osc_val[-2])
+                pure_red_expand = (osc_val[-2] > 0) and (osc_val[-1] > 0) and (osc_val[-1] > osc_val[-2])
+                if pure_red_expand:
                     result.append(ticker)
             except:
                 pass
         return result
 
     # --- App 主介面 ---
-    st.title("📊 周K MACD 綠縮篩選器")
-    st.write("歡迎回來！請輸入代號、設定日期，快速找出綠柱縮短的潛力個股！")
+    st.title("📊 周K MACD 紅增篩選器")
+    st.write("歡迎回來！請輸入代號、設定日期，快速找出紅柱增長的潛力個股！")
 
     default_tickers = "2330, 1519, 2603, 2605"
     tickers_input = st.text_area(
@@ -124,9 +125,8 @@ if check_password():
 
                 if results:
                     st.success(f"✅ 符合條件的股票 ({len(results)} 檔):")
-                    results_str = ", ".join(results)
+                    results_str = " , ".join(results)
                     st.code(results_str, language="text")
                     st.info("💡 提示：點擊上方結果框右上角的『📋』圖示即可快速複製！")
                 else:
-                    st.error("❌ 查無符合條件的周K綠縮個股。")
-
+                    st.error("❌ 查無符合條件的周K紅增個股。")
